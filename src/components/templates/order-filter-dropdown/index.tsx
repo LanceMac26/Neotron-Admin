@@ -111,11 +111,9 @@ const OrderFilters = ({
     limit: REGION_PAGE_SIZE,
   })
 
-  const {
-    regions,
-    count,
-    isLoading: isLoadingRegions,
-  } = useAdminRegions(regionsPagination)
+  const { regions, count, isLoading: isLoadingRegions } = useAdminRegions(
+    regionsPagination
+  )
 
   const handlePaginateRegions = (direction) => {
     if (direction > 0) {

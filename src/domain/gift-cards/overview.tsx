@@ -1,11 +1,13 @@
+import { RouteComponentProps } from "@reach/router"
+import { navigate } from "gatsby"
 import {
   useAdminDeleteProduct,
+  useAdminGiftCards,
   useAdminProducts,
   useAdminStore,
   useAdminUpdateProduct,
 } from "medusa-react"
 import React, { useMemo, useState } from "react"
-import { useNavigate } from "react-router-dom"
 import PageDescription from "../../components/atoms/page-description"
 import Spinner from "../../components/atoms/spinner"
 import PlusIcon from "../../components/fundamentals/icons/plus-icon"
@@ -20,18 +22,18 @@ import { getErrorMessage } from "../../utils/error-messages"
 import CustomGiftcard from "./custom-giftcard"
 import NewGiftCard from "./new"
 
-const Overview = () => {
+const Overview: React.FC<RouteComponentProps> = () => {
   const { products, isLoading } = useAdminProducts({
     is_giftcard: true,
   })
   const { store } = useAdminStore()
+  const { gift_cards: giftCards } = useAdminGiftCards()
   const [showCreate, setShowCreate] = useState(false)
   const [showCreateCustom, setShowCreateCustom] = useState(false)
   const [showDelete, setShowDelete] = useState(false)
 
   const giftCard = products?.[0]
 
-  const navigate = useNavigate()
   const notification = useNotification()
   const updateGiftCard = useAdminUpdateProduct(giftCard?.id!)
   const deleteGiftCard = useAdminDeleteProduct(giftCard?.id!)
@@ -112,7 +114,6 @@ const Overview = () => {
                 title="History"
                 subtitle="See the history of purchased Gift Cards"
                 actionables={actionables}
-                className="h-fit"
               >
                 <GiftCardTable />
               </BodyCard>

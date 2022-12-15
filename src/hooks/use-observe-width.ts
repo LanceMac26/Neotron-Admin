@@ -12,16 +12,13 @@ export const useObserveWidth = (ref: MutableRefObject<any>): number => {
   )
 
   useEffect(() => {
-    const currentRef = ref.current
-    const currentObserver = observer.current
-
-    if (currentRef && currentObserver) {
-      currentObserver.observe(currentRef)
+    if (observer?.current && ref?.current) {
+      observer.current.observe(ref.current)
     }
 
     return () => {
-      if (currentObserver && currentRef) {
-        currentObserver.unobserve(currentRef)
+      if (observer?.current && ref?.current) {
+        observer.current.unobserve(ref?.current)
       }
     }
   }, [ref, observer])

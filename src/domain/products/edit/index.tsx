@@ -1,5 +1,7 @@
+import { RouteComponentProps } from "@reach/router"
+import { navigate } from "gatsby"
 import { useAdminProduct } from "medusa-react"
-import { useNavigate, useParams } from "react-router-dom"
+import React from "react"
 import BackButton from "../../../components/atoms/back-button"
 import Spinner from "../../../components/atoms/spinner"
 import { getErrorStatus } from "../../../utils/get-error-status"
@@ -10,10 +12,11 @@ import RawSection from "./sections/raw"
 import ThumbnailSection from "./sections/thumbnail"
 import VariantsSection from "./sections/variants"
 
-const Edit = () => {
-  const { id } = useParams()
-  const navigate = useNavigate()
+interface EditProps extends RouteComponentProps {
+  id?: string
+}
 
+const Edit = ({ id }: EditProps) => {
   const { product, status, error } = useAdminProduct(id || "")
 
   if (error) {

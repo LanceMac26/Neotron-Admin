@@ -1,15 +1,17 @@
+import { RouteComponentProps } from "@reach/router"
+import { navigate } from "gatsby"
 import {
   useAdminCollection,
   useAdminDeleteCollection,
   useAdminUpdateCollection,
 } from "medusa-react"
-import { useEffect, useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import React, { useEffect, useState } from "react"
 import BackButton from "../../../components/atoms/back-button"
 import Spinner from "../../../components/atoms/spinner"
 import EditIcon from "../../../components/fundamentals/icons/edit-icon"
 import TrashIcon from "../../../components/fundamentals/icons/trash-icon"
 import Actionables from "../../../components/molecules/actionables"
+import Breadcrumb from "../../../components/molecules/breadcrumb"
 import ViewRaw from "../../../components/molecules/view-raw"
 import DeletePrompt from "../../../components/organisms/delete-prompt"
 import { MetadataField } from "../../../components/organisms/metadata"
@@ -21,16 +23,14 @@ import useNotification from "../../../hooks/use-notification"
 import Medusa from "../../../services/api"
 import { getErrorMessage } from "../../../utils/error-messages"
 
-const CollectionDetails = () => {
-  const { id } = useParams()
-
-  const { collection, isLoading, refetch } = useAdminCollection(id!)
-  const deleteCollection = useAdminDeleteCollection(id!)
-  const updateCollection = useAdminUpdateCollection(id!)
+const CollectionDetails: React.FC<RouteComponentProps> = ({ location }) => {
+  const ensuredPath = location!.pathname.replace("/a/collections/", ``)
+  const { collection, isLoading, refetch } = useAdminCollection(ensuredPath)
+  const deleteCollection = useAdminDeleteCollection(ensuredPath)
+  const updateCollection = useAdminUpdateCollection(ensuredPath)
   const [showEdit, setShowEdit] = useState(false)
   const [showDelete, setShowDelete] = useState(false)
   const [showAddProducts, setShowAddProducts] = useState(false)
-  const navigate = useNavigate()
   const notification = useNotification()
   const [updates, setUpdates] = useState(0)
 

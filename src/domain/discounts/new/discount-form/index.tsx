@@ -1,6 +1,7 @@
+import { Discount } from "@medusajs/medusa"
+import { navigate } from "gatsby"
 import * as React from "react"
 import { useWatch } from "react-hook-form"
-import { useNavigate } from "react-router-dom"
 import Button from "../../../../components/fundamentals/button"
 import CrossIcon from "../../../../components/fundamentals/icons/cross-icon"
 import FocusModal from "../../../../components/molecules/modal/focus-modal"
@@ -18,12 +19,18 @@ import DiscountType from "./sections/discount-type"
 import General from "./sections/general"
 
 type DiscountFormProps = {
+  discount?: Discount
+  isEdit?: boolean
+  additionalOpen?: string[]
   closeForm?: () => void
 }
 
-
-const DiscountForm = ({ closeForm }: DiscountFormProps) => {
-  const navigate = useNavigate()
+const DiscountForm: React.FC<DiscountFormProps> = ({
+  discount,
+  closeForm,
+  additionalOpen = [],
+  isEdit = false,
+}) => {
   const notification = useNotification()
   const { handleSubmit, handleReset, control } = useDiscountForm()
 
@@ -39,14 +46,19 @@ const DiscountForm = ({ closeForm }: DiscountFormProps) => {
   }
 
   const submitGhost = async (data: DiscountFormValues) => {
-    onSaveAsInactive(data)
-      .then(() => {
-        closeFormModal()
-        handleReset()
-      })
-      .catch((error) => {
-        notification("Error", getErrorMessage(error), "error")
-      })
+    if (!isEdit) {
+      onSaveAsInactive(data)
+        .then(() => {
+          closeFormModal()
+          handleReset()
+        })
+        .catch((error) => {
+          notification("Error", getErrorMessage(error), "error")
+        })
+    } else {
+      closeFormModal()
+      handleReset()
+    }
   }
 
   const submitCTA = async (data: DiscountFormValues) => {
@@ -91,7 +103,7 @@ const DiscountForm = ({ closeForm }: DiscountFormProps) => {
               onClick={handleSubmit(submitCTA)}
               className="rounded-rounded"
             >
-              Publish discount
+              {isEdit ? "Save changes" : "Publish discount"}
             </Button>
           </div>
         </div>
@@ -99,10 +111,12 @@ const DiscountForm = ({ closeForm }: DiscountFormProps) => {
       <FocusModal.Main>
         <div className="flex justify-center mb-[25%]">
           <div className="max-w-[700px] w-full pt-16">
-            <h1 className="inter-xlarge-semibold">Create new discount</h1>
+            <h1 className="inter-xlarge-semibold">
+              {isEdit ? "Edit discount" : "Create new discount"}
+            </h1>
             <Accordion
               className="pt-7 text-grey-90"
-              defaultValue={["promotion-type"]}
+              defaultValue={["discount-type", ...additionalOpen]}
               type="multiple"
             >
               <Accordion.Item
@@ -128,7 +142,7 @@ const DiscountForm = ({ closeForm }: DiscountFormProps) => {
                 value="general"
                 forceMountContent
               >
-                <General />
+                <General discount={discount} />
               </Accordion.Item>
               <Accordion.Item
                 forceMountContent
@@ -136,7 +150,7 @@ const DiscountForm = ({ closeForm }: DiscountFormProps) => {
                 value="configuration"
                 description="Discount code applies from you hit the publish button and forever if left untouched."
               >
-                <Configuration />
+                <Configuration promotion={discount} isEdit={isEdit} />
               </Accordion.Item>
               <Accordion.Item
                 forceMountContent
@@ -145,7 +159,7 @@ const DiscountForm = ({ closeForm }: DiscountFormProps) => {
                 value="conditions"
                 tooltip="Add conditions to your Discount"
               >
-                <DiscountNewConditions />
+                <DiscountNewConditions discount={discount} />
               </Accordion.Item>
             </Accordion>
           </div>

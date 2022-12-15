@@ -1,4 +1,5 @@
 import { Product } from "@medusajs/medusa"
+import { navigate } from "gatsby"
 import {
   useAdminDeleteProduct,
   useAdminProductTypes,
@@ -6,7 +7,6 @@ import {
 } from "medusa-react"
 import React from "react"
 import { Controller } from "react-hook-form"
-import { useNavigate } from "react-router-dom"
 import TrashIcon from "../../../../components/fundamentals/icons/trash-icon"
 import UnpublishIcon from "../../../../components/fundamentals/icons/unpublish-icon"
 import Input from "../../../../components/molecules/input"
@@ -34,7 +34,6 @@ const Information: React.FC<InformationProps> = ({ giftCard }) => {
       formState: { errors },
     },
   } = useGiftCardForm()
-  const navigate = useNavigate()
   const notification = useNotification()
   const { product_types } = useAdminProductTypes(undefined, {
     cacheTime: 0,

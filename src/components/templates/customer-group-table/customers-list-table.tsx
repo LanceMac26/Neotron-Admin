@@ -1,3 +1,4 @@
+import React from "react"
 import {
   HeaderGroup,
   Row,
@@ -6,6 +7,7 @@ import {
   useTable,
 } from "react-table"
 import { UseMutateFunction } from "react-query"
+import { navigate } from "gatsby"
 
 import { Customer } from "@medusajs/medusa"
 
@@ -15,7 +17,6 @@ import DetailsIcon from "../../fundamentals/details-icon"
 import TrashIcon from "../../fundamentals/icons/trash-icon"
 import useQueryFilters from "../../../hooks/use-query-filters"
 import { FilteringOptionProps } from "../../molecules/table/filtering-option"
-import { useNavigate } from "react-router-dom"
 import TableContainer from "../../organisms/table-container"
 
 /* ********************************** */
@@ -79,8 +80,6 @@ interface CustomersListTableRowProps {
  */
 function CustomersListTableRow(props: CustomersListTableRowProps) {
   const { row, removeCustomers } = props
-
-  const navigate = useNavigate()
 
   const actions = [
     {

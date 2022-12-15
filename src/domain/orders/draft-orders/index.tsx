@@ -1,5 +1,6 @@
-import { useMemo, useState } from "react"
-import { Route, Routes, useNavigate } from "react-router-dom"
+import { RouteComponentProps, Router } from "@reach/router"
+import { navigate } from "gatsby"
+import React, { useMemo, useState } from "react"
 
 import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
 import BodyCard from "../../../components/organisms/body-card"
@@ -11,9 +12,7 @@ import DraftOrderDetails from "./details"
 
 const VIEWS = ["orders", "drafts"]
 
-const DraftOrderIndex = () => {
-  const navigate = useNavigate()
-
+const DraftOrderIndex: React.FC<RouteComponentProps> = () => {
   const view = "drafts"
   const [showNewOrder, setShowNewOrder] = useState(false)
 
@@ -43,7 +42,6 @@ const DraftOrderIndex = () => {
             />
           }
           actionables={actions}
-          className="h-fit"
         >
           <DraftOrderTable />
         </BodyCard>
@@ -59,10 +57,10 @@ const DraftOrderIndex = () => {
 
 const DraftOrders = () => {
   return (
-    <Routes>
-      <Route index element={<DraftOrderIndex />} />
-      <Route path="/:id" element={<DraftOrderDetails />} />
-    </Routes>
+    <Router>
+      <DraftOrderIndex path="/" />
+      <DraftOrderDetails path=":id" />
+    </Router>
   )
 }
 

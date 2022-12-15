@@ -5,7 +5,7 @@ import { Controller, useForm, useWatch } from "react-hook-form"
 import Button from "../../../../components/fundamentals/button"
 import InputField from "../../../../components/molecules/input"
 import Modal from "../../../../components/molecules/modal"
-import { NextSelect } from "../../../../components/molecules/select/next-select"
+import Select from "../../../../components/molecules/select"
 import TextArea from "../../../../components/molecules/textarea"
 import CurrencyInput from "../../../../components/organisms/currency-input"
 import useNotification from "../../../../hooks/use-notification"
@@ -93,7 +93,7 @@ const EditGeneral: React.FC<EditGeneralProps> = ({ discount, onClose }) => {
           <Modal.Header handleClose={onClose}>
             <h1 className="inter-xlarge-semibold">Edit general information</h1>
           </Modal.Header>
-          <Modal.Content>
+          <Modal.Content isLargeModal>
             <Controller
               name="regions"
               control={control}
@@ -104,15 +104,15 @@ const EditGeneral: React.FC<EditGeneralProps> = ({ discount, onClose }) => {
               }}
               render={({ field: { value, onChange } }) => {
                 return (
-                  <NextSelect
+                  <Select
                     value={value}
                     onChange={(value) => {
                       onChange(type === "fixed" ? [value] : value)
                     }}
                     label="Choose valid regions"
-                    isMulti={type !== "fixed"}
-                    selectAll={type !== "fixed"}
-                    isSearchable
+                    isMultiSelect={type !== "fixed"}
+                    hasSelectAll={type !== "fixed"}
+                    enableSearch
                     required
                     options={regionOptions}
                   />

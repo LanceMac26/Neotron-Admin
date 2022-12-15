@@ -1,6 +1,6 @@
+import { navigate, RouteComponentProps, useLocation } from "@reach/router"
 import { useAdminCreateBatchJob, useAdminCreateCollection } from "medusa-react"
 import React, { useContext, useEffect, useState } from "react"
-import { useLocation, useNavigate } from "react-router-dom"
 import Fade from "../../../components/atoms/fade-wrapper"
 import Button from "../../../components/fundamentals/button"
 import ExportIcon from "../../../components/fundamentals/icons/export-icon"
@@ -21,8 +21,7 @@ import { PollingContext } from "../../../context/polling"
 
 const VIEWS = ["products", "collections"]
 
-const Overview = () => {
-  const navigate = useNavigate()
+const Overview = (_props: RouteComponentProps) => {
   const location = useLocation()
   const [view, setView] = useState("products")
   const {
@@ -174,7 +173,6 @@ const Overview = () => {
                 activeView={view}
               />
             }
-            className="h-fit"
           >
             <CurrentView />
           </BodyCard>

@@ -615,9 +615,7 @@ export const countries = [
 ]
 
 export function countryLookup(isoCountryCode) {
-  if (!isoCountryCode) {
-    return
-  }
+  if (!isoCountryCode) return
 
   const normalizedIsoCountryCode = isoCountryCode.toUpperCase()
 
@@ -626,7 +624,7 @@ export function countryLookup(isoCountryCode) {
   } else {
     // try iso alpha 3
     const isoRecord = countries.find(
-      (record) => record.alpha3 === normalizedIsoCountryCode
+      record => record.alpha3 === normalizedIsoCountryCode
     )
 
     if (isoRecord) {

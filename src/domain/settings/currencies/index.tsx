@@ -1,6 +1,8 @@
-import { JsonViewer } from "@textea/json-viewer"
+import { RouteComponentProps } from "@reach/router"
+import { navigate } from "gatsby"
 import { useAdminStore } from "medusa-react"
-import { useNavigate } from "react-router-dom"
+import React from "react"
+import ReactJson from "react-json-view"
 import BackButton from "../../../components/atoms/back-button"
 import Spinner from "../../../components/atoms/spinner"
 import Tooltip from "../../../components/atoms/tooltip"
@@ -12,8 +14,7 @@ import CurrencyTaxSetting from "./components/currency-tax-setting"
 import DefaultStoreCurrency from "./components/default-store-currency"
 import StoreCurrencies from "./components/store-currencies"
 
-const CurrencySettings = () => {
-  const navigate = useNavigate()
+const CurrencySettings = (_props: RouteComponentProps) => {
   const { trackCurrencies } = useAnalytics()
   const { store, status, error } = useAdminStore({
     onSuccess: (data) => {
@@ -43,10 +44,10 @@ const CurrencySettings = () => {
         <p className="inter-base-regular">{message}</p>
 
         <div className="mt-base bg-grey-5 rounded-rounded px-base py-xsmall">
-          <JsonViewer
-            rootName="stack_trace"
-            defaultInspectDepth={0}
-            value={JSON.parse(JSON.stringify(error))}
+          <ReactJson
+            name={"Stack Trace"}
+            collapsed={true}
+            src={JSON.parse(JSON.stringify(error))}
           />
         </div>
       </Section>

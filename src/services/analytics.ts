@@ -4,12 +4,23 @@ import axios from "axios"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import { WRITE_KEY } from "../components/constants/analytics"
 import { useFeatureFlag } from "../context/feature-flag"
-import { medusaUrl } from "./config"
+
+let baseURL = "http://localhost:9000"
+
+// deprecated
+if (process.env.GATSBY_STORE_URL) {
+  baseURL = process.env.GATSBY_STORE_URL
+}
+
+// takes precedence over GATSBY_STORE_URL
+if (process.env.GATSBY_MEDUSA_BACKEND_URL) {
+  baseURL = process.env.GATSBY_MEDUSA_BACKEND_URL
+}
 
 // API
 
 const client = axios.create({
-  baseURL: `${medusaUrl}/admin/analytics-configs`,
+  baseURL: `${baseURL}/admin/analytics-configs`,
   withCredentials: true,
 })
 

@@ -1,18 +1,20 @@
-import { useMemo } from "react"
-import { Column } from "react-table"
+import React, { useMemo } from "react"
 import Badge from "../../../components/fundamentals/badge"
 import LockIcon from "../../../components/fundamentals/icons/lock-icon"
-import { TaxRateTableEntries } from "./details"
+import Table from "../../../components/molecules/table"
 
 const useTaxRateColumns = () => {
-  const columns: Column<TaxRateTableEntries>[] = useMemo(
+  const columns = useMemo(
     () => [
       {
         Header: <div className="pl-2">Name</div>,
         accessor: "name",
-        Cell: ({ row, cell: { value } }) => {
+        Cell: ({ row, cell: { value }, index }) => {
           return (
-            <div className="text-grey-90 group-hover:text-violet-60 pl-2">
+            <Table.Cell
+              key={index}
+              className="text-grey-90 group-hover:text-violet-60 pl-2"
+            >
               {row.original.type === "region" ? (
                 <div className="flex gap-x-xsmall text-grey-40 items-center">
                   <LockIcon size={"12"} /> {value}
@@ -20,23 +22,25 @@ const useTaxRateColumns = () => {
               ) : (
                 value
               )}
-            </div>
+            </Table.Cell>
           )
         },
       },
       {
         Header: "Code",
         accessor: "code",
-        Cell: ({ cell: { value } }) => (
-          <div>
+        Cell: ({ cell: { value }, index }) => (
+          <Table.Cell key={index}>
             <Badge variant="default">{value}</Badge>
-          </div>
+          </Table.Cell>
         ),
       },
       {
         Header: "Tax Rate",
         accessor: "rate",
-        Cell: ({ cell: { value } }) => <div>{value} %</div>,
+        Cell: ({ row, cell: { value }, index }) => (
+          <Table.Cell key={index}>{value} %</Table.Cell>
+        ),
       },
     ],
     []

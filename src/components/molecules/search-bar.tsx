@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react"
+import { globalHistory } from "@reach/router"
+import React, { useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
-import { useLocation } from "react-router-dom"
 import OSShortcut from "../atoms/os-shortcut"
 import SearchIcon from "../fundamentals/icons/search-icon"
 import SearchModal from "../templates/search-modal"
 
 const SearchBar: React.FC = () => {
   const [showSearchModal, setShowSearchModal] = useState(false)
-  const location = useLocation()
 
   const toggleSearch = (e) => {
     e.preventDefault()
@@ -23,9 +22,13 @@ const SearchBar: React.FC = () => {
   useHotkeys("ctrl+k", toggleSearch, {}, [])
   useHotkeys("/", toggleSearch, {}, [])
 
-  useEffect(() => {
-    closeModal()
-  }, [location])
+  React.useEffect(() => {
+    return globalHistory.listen(({ action }) => {
+      if (action === "PUSH") {
+        closeModal()
+      }
+    })
+  }, [])
 
   return (
     <>

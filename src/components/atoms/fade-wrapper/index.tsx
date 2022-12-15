@@ -8,7 +8,6 @@ type FadeProps = {
   transitionClass?: string
   end?: string
   classname?: string
-  children?: React.ReactNode
 }
 
 const Fade: React.FC<FadeProps> = ({

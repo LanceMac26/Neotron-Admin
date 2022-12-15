@@ -3,6 +3,7 @@ import {
   AdminPostProductsProductVariantsReq,
   AdminPostProductsProductVariantsVariantReq,
 } from "@medusajs/medusa"
+import { navigate } from "gatsby"
 import {
   useAdminCreateVariant,
   useAdminDeleteProduct,
@@ -11,14 +12,12 @@ import {
   useAdminUpdateProduct,
   useAdminUpdateVariant,
 } from "medusa-react"
-import { useNavigate } from "react-router-dom"
 import useImperativeDialog from "../../../../hooks/use-imperative-dialog"
 import useNotification from "../../../../hooks/use-notification"
 import { getErrorMessage } from "../../../../utils/error-messages"
 
 const useEditProductActions = (productId: string) => {
   const dialog = useImperativeDialog()
-  const navigate = useNavigate()
   const notification = useNotification()
   const getProduct = useAdminProduct(productId)
   const updateProduct = useAdminUpdateProduct(productId)

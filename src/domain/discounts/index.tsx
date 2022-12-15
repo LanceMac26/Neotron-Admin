@@ -1,5 +1,5 @@
+import { RouteComponentProps, Router } from "@reach/router"
 import React, { useState } from "react"
-import { Route, Routes } from "react-router-dom"
 import Fade from "../../components/atoms/fade-wrapper"
 import PlusIcon from "../../components/fundamentals/icons/plus-icon"
 import BodyCard from "../../components/organisms/body-card"
@@ -10,7 +10,7 @@ import New from "./new"
 import DiscountForm from "./new/discount-form"
 import { DiscountFormProvider } from "./new/discount-form/form/discount-form-context"
 
-const DiscountIndex = () => {
+const DiscountIndex: React.FC<RouteComponentProps> = () => {
   const [isOpen, setIsOpen] = useState(false)
 
   const actionables = [
@@ -27,7 +27,6 @@ const DiscountIndex = () => {
         <BodyCard
           actionables={actionables}
           customHeader={<TableViewHeader views={["discounts"]} />}
-          className="h-fit"
         >
           <DiscountTable />
         </BodyCard>
@@ -43,11 +42,11 @@ const DiscountIndex = () => {
 
 const Discounts = () => {
   return (
-    <Routes>
-      <Route index element={<DiscountIndex />} />
-      <Route path="/new" element={<New />} />
-      <Route path="/:id" element={<Details />} />
-    </Routes>
+    <Router>
+      <DiscountIndex path="/" />
+      <Details path=":id" />
+      <New path="new" />
+    </Router>
   )
 }
 

@@ -1,13 +1,14 @@
-import { Route, Routes } from "react-router-dom"
+import { Router } from "@reach/router"
+import React from "react"
 import Edit from "./edit"
 import Overview from "./overview"
 
 const ProductsRoute = () => {
   return (
-    <Routes>
-      <Route index element={<Overview />} />
-      <Route path="/:id" element={<Edit />} />
-    </Routes>
+    <Router>
+      <Overview path="/" />
+      <Edit path="/:id" />
+    </Router>
   )
 }
 

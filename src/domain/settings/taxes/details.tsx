@@ -1,19 +1,19 @@
-import clsx from "clsx"
 import { useAdminRegion, useAdminTaxRates } from "medusa-react"
-import { useEffect, useState } from "react"
+import clsx from "clsx"
+import React, { useEffect, useState } from "react"
 import { useTable } from "react-table"
 import Spinner from "../../../components/atoms/spinner"
 import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
 import Table from "../../../components/molecules/table"
 import BodyCard from "../../../components/organisms/body-card"
-import { PaginationProps, TaxRateType } from "../../../types/shared"
-import EditTaxRate from "./edit"
-import NewTaxRate from "./new"
-import { RegionTaxForm } from "./region-form"
-import { TaxRateRow } from "./tax-rate-row"
 import useTaxRateColumns from "./use-tax-rate-columns"
+import NewTaxRate from "./new"
+import EditTaxRate from "./edit"
+import { TaxRateRow } from "./tax-rate-row"
+import { RegionTaxForm } from "./region-form"
+import { TaxRateType, PaginationProps } from "../../../types/shared"
 
-export type TaxRateTableEntries = {
+type TaxRate = {
   id: string
   name?: string
   rate: number | null
@@ -24,27 +24,24 @@ export type TaxRateTableEntries = {
 const DEFAULT_PAGESIZE = 10
 
 const TaxDetails = ({ id }) => {
+  if (!id) {
+    return null
+  }
+
   const [pagination, setPagination] = useState<PaginationProps>({
     limit: DEFAULT_PAGESIZE,
     offset: 0,
   })
   const [showNew, setShowNew] = useState<boolean>(false)
-  const [editRate, setEditRate] = useState<TaxRateTableEntries | null>(null)
-  const [tableEntries, setTableEntries] = useState<TaxRateTableEntries[]>([])
+  const [editRate, setEditRate] = useState<TaxRate | null>(null)
+  const [tableEntries, setTableEntries] = useState<TaxRate[]>([])
 
-  const { tax_rates, isLoading: taxRatesLoading } = useAdminTaxRates(
-    {
-      region_id: id,
-      ...pagination,
-    },
-    {
-      enabled: !!id,
-    }
-  )
-
-  const { region, isLoading: regionIsLoading } = useAdminRegion(id, {
-    enabled: !!id,
+  const { tax_rates, isLoading: taxRatesLoading } = useAdminTaxRates({
+    region_id: id,
+    ...pagination,
   })
+
+  const { region, isLoading: regionIsLoading } = useAdminRegion(id)
 
   useEffect(() => {
     if (!taxRatesLoading && !regionIsLoading && region && tax_rates) {
@@ -73,17 +70,18 @@ const TaxDetails = ({ id }) => {
 
   const [columns] = useTaxRateColumns()
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({
-      columns,
-      data: tableEntries || [],
-      manualPagination: true,
-      autoResetPage: false,
-    })
-
-  if (!id) {
-    return null
-  }
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+  } = useTable({
+    columns,
+    data: tableEntries || [],
+    manualPagination: true,
+    autoResetPage: false,
+  })
 
   return (
     <>
@@ -102,9 +100,9 @@ const TaxDetails = ({ id }) => {
           className={clsx({ ["relative"]: regionIsLoading })}
         >
           <Table.Head>
-            {headerGroups?.map((headerGroup) => (
+            {headerGroups?.map((headerGroup, index) => (
               <Table.HeadRow {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((col) => (
+                {headerGroup.headers.map((col, headerIndex) => (
                   <Table.HeadCell {...col.getHeaderProps()}>
                     {col.render("Header")}
                   </Table.HeadCell>
@@ -137,7 +135,7 @@ const TaxDetails = ({ id }) => {
           Tax Calculation Settings
         </h3>
         <div className="flex flex-1">
-          {!regionIsLoading && region && <RegionTaxForm region={region} />}
+          {!regionIsLoading && <RegionTaxForm region={region} />}
         </div>
       </BodyCard>
       {showNew && (

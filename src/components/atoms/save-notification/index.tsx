@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react"
 import type { Toast } from "react-hot-toast"
-import { toast as globalToast } from "react-hot-toast"
+import { toast as global } from "react-hot-toast"
 import RefreshIcon from "../../fundamentals/icons/refresh-icon"
 import ToasterContainer from "../toaster-container"
 import ErrorState from "./error-state"
@@ -26,30 +26,24 @@ const SaveNotification: React.FC<SaveNotificationProps> = ({
 }) => {
   const onDismiss = () => {
     reset()
-    globalToast.dismiss(toast.id)
+    global.dismiss(toast.id)
   }
 
   const handleSave = () => {
-    globalToast.custom((t) => <SavingState toast={t} />, {
+    global.custom((t) => <SavingState toast={t} />, {
       id: toast.id,
     })
 
     onSave()
       .then(() => {
-        globalToast.custom(
-          (t) => <SuccessState toast={t} onDismiss={onDismiss} />,
-          {
-            id: toast.id,
-          }
-        )
+        global.custom((t) => <SuccessState toast={t} onDismiss={onDismiss} />, {
+          id: toast.id,
+        })
       })
       .catch((_err) => {
-        globalToast.custom(
-          (t) => <ErrorState toast={t} onDismiss={onDismiss} />,
-          {
-            id: toast.id,
-          }
-        )
+        global.custom((t) => <ErrorState toast={t} onDismiss={onDismiss} />, {
+          id: toast.id,
+        })
       })
   }
 

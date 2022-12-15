@@ -1,15 +1,16 @@
-import { Route, Routes } from "react-router-dom"
+import { Router } from "@reach/router"
+import React from "react"
 import GiftCardDetails from "./details"
 import ManageGiftCard from "./manage"
 import Overview from "./overview"
 
 const GiftCard = () => {
   return (
-    <Routes>
-      <Route path="/" element={<Overview />} />
-      <Route path="/:id" element={<GiftCardDetails />} />
-      <Route path="/manage" element={<ManageGiftCard />} />
-    </Routes>
+    <Router>
+      <Overview path="/" />
+      <GiftCardDetails path="/:id" />
+      <ManageGiftCard path="manage" />
+    </Router>
   )
 }
 

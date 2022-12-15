@@ -1,4 +1,5 @@
-import { Route, Routes } from "react-router-dom"
+import { Router } from "@reach/router"
+import React from "react"
 import SettingsCard from "../../components/atoms/settings-card"
 import FeatureToggle from "../../components/fundamentals/feature-toggle"
 import ChannelsIcon from "../../components/fundamentals/icons/channels-icon"
@@ -16,10 +17,10 @@ import CurrencySettings from "./currencies"
 import Details from "./details"
 import PersonalInformation from "./personal-information"
 import Regions from "./regions"
+import NewRegion from "./regions/new"
 import ReturnReasons from "./return-reasons"
 import Taxes from "./taxes"
 import Users from "./users"
-import KeyIcon from "../../components/fundamentals/icons/key-icon"
 
 const SettingsIndex = () => {
   return (
@@ -87,29 +88,29 @@ const SettingsIndex = () => {
           to={`/a/sales-channels`}
         />
       </FeatureToggle>
-      <FeatureToggle featureFlag="publishable_api_keys">
-        <SettingsCard
-          heading={"API key management"}
-          description={"Create and manage API keys"}
-          icon={<KeyIcon />}
-          to={`/a/publishable-api-keys`}
-        />
-      </FeatureToggle>
     </SettingsOverview>
   )
 }
 
 const Settings = () => (
-  <Routes className="h-full">
-    <Route index element={<SettingsIndex />} />
-    <Route path="/details" element={<Details />} />
-    <Route path="/regions/*" element={<Regions />} />
-    <Route path="/currencies" element={<CurrencySettings />} />
-    <Route path="/return-reasons" element={<ReturnReasons />} />
-    <Route path="/team" element={<Users />} />
-    <Route path="/personal-information" element={<PersonalInformation />} />
-    <Route path="/taxes" element={<Taxes />} />
-  </Routes>
+  <Router className="h-full">
+    <SettingsIndex path="/" />
+
+    <Details path="details" />
+
+    <CurrencySettings path="currencies" />
+
+    <ReturnReasons path="return-reasons" />
+
+    <Regions path="regions/*" />
+    <NewRegion path="regions/new" />
+
+    <Taxes path="taxes" />
+
+    <Users path="team" />
+
+    <PersonalInformation path="personal-information" />
+  </Router>
 )
 
 export default Settings

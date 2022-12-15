@@ -1,3 +1,4 @@
+import clsx from "clsx"
 import { isEmpty } from "lodash"
 import { useAdminDiscounts } from "medusa-react"
 import qs from "qs"
@@ -39,7 +40,7 @@ const DiscountTable: React.FC = () => {
   const { discounts, isLoading, count } = useAdminDiscounts(
     {
       is_dynamic: false,
-      expand: "rule,rule.conditions,rule.conditions.products,regions",
+      expand: "rule,rule.conditions,rule.conditions.products",
       ...queryObject,
     },
     {
@@ -199,7 +200,7 @@ const DiscountTable: React.FC = () => {
         <Table.Body {...getTableBodyProps()}>
           {rows.map((row) => {
             prepareRow(row)
-            return <PromotionRow row={row} key={row.original.id} />
+            return <PromotionRow row={row} />
           })}
         </Table.Body>
       </Table>

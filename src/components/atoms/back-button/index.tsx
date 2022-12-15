@@ -1,6 +1,6 @@
 import clsx from "clsx"
+import { navigate } from "gatsby"
 import React from "react"
-import { useNavigate } from "react-router-dom"
 import ArrowLeftIcon from "../../fundamentals/icons/arrow-left-icon"
 
 type Props = {
@@ -10,7 +10,6 @@ type Props = {
 }
 
 const BackButton = ({ path, label = "Go back", className }: Props) => {
-  const navigate = useNavigate()
   return (
     <button
       onClick={() => {

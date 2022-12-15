@@ -236,14 +236,7 @@ const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
           >
             <Table.Body {...getTableBodyProps()}>
               {isLoading ? (
-                <Table.Row>
-                  <Table.Cell
-                    colSpan={columns.length}
-                    className="flex items-center justify-center"
-                  >
-                    <Spinner size="large" variant="secondary" />
-                  </Table.Cell>
-                </Table.Row>
+                <Spinner size="large" />
               ) : (
                 rows.map((row, i) => {
                   prepareRow(row)

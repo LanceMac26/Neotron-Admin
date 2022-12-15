@@ -39,7 +39,6 @@ const useKeyboardNavigationList = ({ length = 0 }) => {
       tabIndex: index,
       role: "option",
       id: `result-item-${index}`,
-      key: index,
       "aria-selected": selected === index,
       ref: (el) => {
         liRefs.current[index] = el

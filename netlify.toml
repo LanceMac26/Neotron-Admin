@@ -1,5 +1,2 @@
 [template.environment]
-  MEDUSA_BACKEND_URL="URL of your Medusa Server"
-
-[build]
-  publish = "public/"
+GATSBY_MEDUSA_BACKEND_URL="URL of your Medusa Server"

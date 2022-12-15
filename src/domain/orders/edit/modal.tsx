@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { Order, OrderEdit, ProductVariant } from "@medusajs/medusa"
 import {
   useAdminCreateOrderEdit,
@@ -172,8 +172,10 @@ function OrderEditModal(props: OrderEditModalProps) {
     isLoading: isRequestingConfirmation,
   } = useAdminRequestOrderEditConfirmation(orderEdit.id)
 
-  const { mutateAsync: updateOrderEdit, isLoading: isUpdating } =
-    useAdminUpdateOrderEdit(orderEdit.id)
+  const {
+    mutateAsync: updateOrderEdit,
+    isLoading: isUpdating,
+  } = useAdminUpdateOrderEdit(orderEdit.id)
 
   const { mutateAsync: deleteOrderEdit } = useAdminDeleteOrderEdit(orderEdit.id)
 
@@ -365,38 +367,43 @@ type OrderEditModalContainerProps = {
   order: Order
 }
 
-let isRequestRunningFlag = false
-
 function OrderEditModalContainer(props: OrderEditModalContainerProps) {
   const { order } = props
   const notification = useNotification()
 
-  const { hideModal, orderEdits, activeOrderEditId, setActiveOrderEdit } =
-    useContext(OrderEditContext)
+  const {
+    hideModal,
+    orderEdits,
+    activeOrderEditId,
+    setActiveOrderEdit,
+  } = useContext(OrderEditContext)
 
-  const { mutateAsync: createOrderEdit } = useAdminCreateOrderEdit()
+  const { mutate: createOrderEdit } = useAdminCreateOrderEdit()
 
   const orderEdit = orderEdits?.find((oe) => oe.id === activeOrderEditId)
 
   useEffect(() => {
-    if (activeOrderEditId || isRequestRunningFlag) {
+    if (activeOrderEditId) {
       return
     }
 
-    isRequestRunningFlag = true
-
-    createOrderEdit({ order_id: order.id })
-      .then(({ order_edit }) => setActiveOrderEdit(order_edit.id))
-      .catch(() => {
-        notification(
-          "Error",
-          "There is already an active order edit on this order",
-          "error"
-        )
-        hideModal()
-      })
-      .finally(() => (isRequestRunningFlag = false))
-  }, [activeOrderEditId])
+    createOrderEdit(
+      { order_id: order.id },
+      {
+        onSuccess: ({ order_edit }) => {
+          setActiveOrderEdit(order_edit.id)
+        },
+        onError: () => {
+          notification(
+            "Error",
+            "There is already active order edit on this order",
+            "error"
+          )
+          hideModal()
+        },
+      }
+    )
+  }, [activeOrderEditId, orderEdits])
 
   const onClose = () => {
     setActiveOrderEdit(undefined)
